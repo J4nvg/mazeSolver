@@ -1,3 +1,2 @@
 # Maze solver project
-### Boot portfolio projects
-
+### Boot portfolio project
