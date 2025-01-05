@@ -2,13 +2,17 @@ from classes import *
 
 
 def main():
-    win = Window(800,600)
-    l1 = Line(Point(0,10),Point(100,0))
-    l2 = Line(Point(0,20),Point(20,0))
-    l3 = Line(Point(10,20),Point(20,10))
-    win.draw_line(l1,"black")
-    win.draw_line(l2,"red")
-    win.draw_line(l3,"green")
+    num_rows = 12
+    num_cols = 16
+    margin = 50
+    screen_x = 800
+    screen_y = 600
+    cell_size_x = (screen_x - 2 * margin) / num_cols
+    cell_size_y = (screen_y - 2 * margin) / num_rows
+    win = Window(screen_x, screen_y)
+
+    maze = Maze(margin, margin, num_rows, num_cols, cell_size_x, cell_size_y, win)
+
     win.wait_for_close()
 
 if __name__ == '__main__':
