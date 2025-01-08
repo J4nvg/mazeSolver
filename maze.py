@@ -54,7 +54,7 @@ class Maze():
         cell._y2 = bottom
 
         cell.draw()
-        self._animate()
+        # self._animate_2()
     
     def _break_entrance_and_exit(self):
         self._cells[0][0].has_top_wall = False
@@ -95,10 +95,66 @@ class Maze():
             elif nj  == j-1:
                 # Moving left: knock down LEFT of current, RIGHT of next
                 self._cells[i][j].has_left_wall = False
+                self._cells[ni][nj].has_right_wall = False
             
             self._break_walls_r(ni, nj)
 
+    def solve_dfs(self):
+        return self._solve_r_dfs(i=0,j=0)
+
+    def _solve_r_dfs(self,i,j):
+        self._animate()
+        current = self._cells[i][j]
+        current.visited = True
+        if i == self.num_rows-1 and j == self.num_cols-1:
+            return True
+        ni,nj = (i+1,j)
+        # if ni >= 0 and ni < self.num_rows and nj >= 0 and nj < self.num_cols:
+        if ni < self.num_rows:
+            visiting = self._cells[ni][nj]
+            if not visiting.visited:
+                if not current.has_bottom_wall and not visiting.has_top_wall:
+                    current.draw_move(visiting)
+                    if self._solve_r_dfs(ni,nj):
+                        return True
+                    else:
+                        current.draw_move(visiting,undo=True)
+        ni,nj = (i-1,j)
+        if ni >= 0:
+            visiting = self._cells[ni][nj]
+            if not visiting.visited:
+                if not current.has_top_wall and not visiting.has_bottom_wall:
+                    current.draw_move(visiting)
+                    if self._solve_r_dfs(ni,nj):
+                        return True
+                    else:
+                        current.draw_move(visiting,undo=True)
+        ni,nj = (i,j+1)
+        if nj < self.num_cols:
+            visiting = self._cells[ni][nj]
+            if not visiting.visited:
+                if not current.has_right_wall and not visiting.has_left_wall:
+                    current.draw_move(visiting)
+                    if self._solve_r_dfs(ni,nj):
+                        return True
+                    else:
+                        current.draw_move(visiting,undo=True)
+        ni,nj = (i,j-1)
+        if nj >= 0 :
+            visiting = self._cells[ni][nj]
+            if not visiting.visited:
+                if not current.has_left_wall and not visiting.has_right_wall:
+                    current.draw_move(visiting)
+                    if self._solve_r_dfs(ni,nj):
+                        return True
+                    else:
+                        current.draw_move(visiting,undo=True)
+        return False
 
     def _animate(self):
         self.win.redraw()
         time.sleep(0.05)
+    
+    def _animate_2(self):
+        self.win.redraw()
+        time.sleep(0.01)

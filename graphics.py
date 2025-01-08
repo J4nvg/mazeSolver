@@ -7,14 +7,17 @@ class Window():
         self.height = height
         self.__root = Tk()
         self.__root.title = ("Window")
-        self.canvas = Canvas()
-        self.canvas.pack()
+        self.canvas = Canvas(self.__root, width=self.width, height=self.height)
+        self.canvas.pack(fill=BOTH, expand=True)
         self.running = False
     
     def redraw(self):
         self.__root.update_idletasks()
         self.__root.update()
     
+    def clear(self):
+        self.canvas.delete("all")
+
     def close(self):
         self.running = False
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
@@ -65,7 +68,6 @@ class Cell():
         else:
             ll = Line(Point(self._x1, self._y1),Point(self._x1, self._y2))
             self._win.draw_line(ll,"#d9d9d9")
-
         if self.has_right_wall:
             rl = Line(Point(self._x2, self._y1),Point(self._x2, self._y2))
             self._win.draw_line(rl,"black")
@@ -86,7 +88,7 @@ class Cell():
             self._win.draw_line(bl,"#d9d9d9")
 
     def draw_move(self,to_cell,undo=False):
-        line_color = "gray"
+        line_color = "blue"
         if not undo:
             line_color = "red"
         C1 = (.5 * (self._x2 + self._x1),.5 * (self._y2 + self._y1))
