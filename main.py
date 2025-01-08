@@ -1,4 +1,5 @@
-from classes import *
+from graphics import Window,Point,Line,Cell
+from maze import Maze
 
 
 def main():
@@ -15,5 +16,4 @@ def main():
 
     win.wait_for_close()
 
-if __name__ == '__main__':
-    main()
+main()
